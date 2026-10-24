@@ -1,0 +1,400 @@
+{
+  "nombre": "vg-ms-certificate",
+  "tipo": "Dominio",
+  "equipo": "Agenda parroquial",
+  "path": "D:\\vg-ms-arquitect-main\\vg-ms-certificateservice-hexagonal",
+  "repo_base": "https://gitlab.com/vallegrande/as241s5_prs3/vg-ms-certificate/-/blob/develop/",
+  "veredicto": "CUMPLE",
+  "veredicto_detalle": "Sin críticos ni fallas.",
+  "prioridades": [
+    "Mantener."
+  ],
+  "notas": {
+    "Estructura": 5,
+    "DDD": 5,
+    "Clean Code": 5,
+    "Persistencia": 5,
+    "API REST": 5,
+    "Seguridad": 5,
+    "Gateway": 5,
+    "Comms entre MS": "n/a",
+    "Archivos": "n/a",
+    "Config / env": 5,
+    "Docker + README": 5,
+    "Pruebas": 5,
+    "Errores y logs": 5
+  },
+  "hallazgos": [
+    {
+      "estado": "Cubierto",
+      "criterio": "Estructura",
+      "nota": 5,
+      "titulo": "Nombre vg-ms-{contexto}",
+      "detalle": "El repositorio se llama vg-ms-certificate.",
+      "ruta": "vg-ms-certificate",
+      "accion": "Mantener."
+    },
+    {
+      "estado": "Cubierto",
+      "criterio": "Estructura",
+      "nota": 5,
+      "titulo": "Package base único en minúsculas",
+      "detalle": "Package base: pe.edu.vallegrande.fideinexus.certificate.",
+      "ruta": "",
+      "accion": "Mantener."
+    },
+    {
+      "estado": "Cubierto",
+      "criterio": "Estructura",
+      "nota": 5,
+      "titulo": "Un contexto de negocio por microservicio",
+      "detalle": "Contextos en el package: certificate.",
+      "ruta": "",
+      "accion": "Mantener."
+    },
+    {
+      "estado": "Cubierto",
+      "criterio": "Estructura",
+      "nota": 5,
+      "titulo": "Capas domain/application/infrastructure",
+      "detalle": "El código está organizado en domain, application e infrastructure.",
+      "ruta": "",
+      "accion": "Mantener."
+    },
+    {
+      "estado": "Cubierto",
+      "criterio": "DDD",
+      "nota": 5,
+      "titulo": "Dominio sin anotaciones de framework, WebClient ni SDKs",
+      "detalle": "domain/ no importa Spring, persistencia ni HTTP.",
+      "ruta": "",
+      "accion": "Mantener."
+    },
+    {
+      "estado": "Cubierto",
+      "criterio": "Estructura",
+      "nota": 5,
+      "titulo": "Entidades y agregados en domain/model",
+      "detalle": "Modelos en domain/model.",
+      "ruta": "",
+      "accion": "Mantener."
+    },
+    {
+      "estado": "Cubierto",
+      "criterio": "Estructura",
+      "nota": 5,
+      "titulo": "Value objects y enums en domain/vo",
+      "detalle": "Se aplica la ubicación domain/vo definida por ProjectArchitecture, que prevalece sobre esta guía: Se usan domain/model y domain/vo de ProjectArchitecture hexagonal, que manda sobre esta guía; la guía pide domain/models y domain/enums.",
+      "ruta": "",
+      "accion": "Mantener la estructura hexagonal acordada."
+    },
+    {
+      "estado": "Cubierto",
+      "criterio": "Estructura",
+      "nota": 5,
+      "titulo": "Puertos, casos de uso y controllers en sus adaptadores",
+      "detalle": "Puertos, casos de uso y controllers siguen la estructura hexagonal.",
+      "ruta": "",
+      "accion": "Mantener."
+    },
+    {
+      "estado": "Cubierto",
+      "criterio": "DDD",
+      "nota": 5,
+      "titulo": "Reglas de negocio fuera de *Rest",
+      "detalle": "Los *Rest delegan en casos de uso; no tocan repositorios.",
+      "ruta": "",
+      "accion": "Mantener."
+    },
+    {
+      "estado": "Cubierto",
+      "criterio": "DDD",
+      "nota": 5,
+      "titulo": "Lenguaje ubicuo: un concepto, un nombre",
+      "detalle": "Los conceptos del dominio tienen un solo nombre en inglés.",
+      "ruta": "",
+      "accion": "Mantener."
+    },
+    {
+      "estado": "Cubierto",
+      "criterio": "DDD",
+      "nota": 5,
+      "titulo": "Sin God Service",
+      "detalle": "El servicio más grande es CertificateService con 160 líneas; el límite es 400.",
+      "ruta": "src/main/java/pe/edu/vallegrande/fideinexus/certificate/application/usecase/CertificateService.java",
+      "accion": "Mantener."
+    },
+    {
+      "estado": "Cubierto",
+      "criterio": "Clean Code",
+      "nota": 5,
+      "titulo": "Inyección por constructor",
+      "detalle": "Inyección por constructor o inject(); sin @Autowired.",
+      "ruta": "",
+      "accion": "Mantener."
+    },
+    {
+      "estado": "Cubierto",
+      "criterio": "Clean Code",
+      "nota": 5,
+      "titulo": "Sin literales mágicos de negocio",
+      "detalle": "Estados y roles vienen de enums y constantes.",
+      "ruta": "",
+      "accion": "Mantener."
+    },
+    {
+      "estado": "Cubierto",
+      "criterio": "Clean Code",
+      "nota": 5,
+      "titulo": "@Valid en el borde de entrada",
+      "detalle": "Todo @RequestBody lleva @Valid.",
+      "ruta": "",
+      "accion": "Mantener."
+    },
+    {
+      "estado": "Cubierto",
+      "criterio": "Clean Code",
+      "nota": 5,
+      "titulo": "Sin block() en WebFlux",
+      "detalle": "No hay block() en código productivo.",
+      "ruta": "",
+      "accion": "Mantener."
+    },
+    {
+      "estado": "Cubierto",
+      "criterio": "API REST",
+      "nota": 5,
+      "titulo": "Rutas bajo /api/v1/{recurso}",
+      "detalle": "Base: /api/v1/services.",
+      "ruta": "src/main/java/pe/edu/vallegrande/fideinexus/certificate/infrastructure/config/ApiPaths.java:8",
+      "accion": "Mantener."
+    },
+    {
+      "estado": "Cubierto",
+      "criterio": "API REST",
+      "nota": 5,
+      "titulo": "Recursos en plural y kebab-case",
+      "detalle": "Recursos: service-participants, service-types, services.",
+      "ruta": "",
+      "accion": "Mantener."
+    },
+    {
+      "estado": "Cubierto",
+      "criterio": "API REST",
+      "nota": 5,
+      "titulo": "DTOs *Request / *Response, sin entidades",
+      "detalle": "9 DTOs de API con sufijo de request o respuesta.",
+      "ruta": "",
+      "accion": "Mantener."
+    },
+    {
+      "estado": "Cubierto",
+      "criterio": "API REST",
+      "nota": 5,
+      "titulo": "Códigos HTTP correctos",
+      "detalle": "422 está documentado como excepción exigida por el estándar de seguridad: Los errores de validación responden 422 porque lo exige el estándar de seguridad; esta guía y el de reportes piden 400.",
+      "ruta": "",
+      "accion": "Mantener 422 mientras lo exija el estándar de seguridad."
+    },
+    {
+      "estado": "Cubierto",
+      "criterio": "API REST",
+      "nota": 5,
+      "titulo": "GlobalExceptionHandler con formato uniforme",
+      "detalle": "Manejador global con la misma envoltura de respuesta.",
+      "ruta": "src/main/java/pe/edu/vallegrande/fideinexus/certificate/infrastructure/exception/GlobalExceptionHandler.java",
+      "accion": "Mantener."
+    },
+    {
+      "estado": "Cubierto",
+      "criterio": "API REST",
+      "nota": 5,
+      "titulo": "OpenAPI en endpoints públicos",
+      "detalle": "springdoc y @Operation en los controllers.",
+      "ruta": "",
+      "accion": "Mantener."
+    },
+    {
+      "estado": "Cubierto",
+      "criterio": "Persistencia",
+      "nota": 5,
+      "titulo": "BD o schema propio del MS",
+      "detalle": "Schema propio: src/main/resources/sql/schema.sql.",
+      "ruta": "src/main/resources/sql/schema.sql",
+      "accion": "Mantener."
+    },
+    {
+      "estado": "Cubierto",
+      "criterio": "Persistencia",
+      "nota": 5,
+      "titulo": "Motor documentado",
+      "detalle": "Motor R2DBC y documentado en el README.",
+      "ruta": "",
+      "accion": "Mantener."
+    },
+    {
+      "estado": "Cubierto",
+      "criterio": "Persistencia",
+      "nota": 5,
+      "titulo": "Credenciales solo por variables de entorno",
+      "detalle": "URL, usuario y clave llegan por variables de entorno.",
+      "ruta": "",
+      "accion": "Mantener."
+    },
+    {
+      "estado": "Cubierto",
+      "criterio": "Persistencia",
+      "nota": 5,
+      "titulo": "Soft-delete o estados documentados",
+      "detalle": "Borrado lógico con estado del registro.",
+      "ruta": "src/main/java/pe/edu/vallegrande/fideinexus/certificate/infrastructure/adapter/out/persistence/r2dbc/entity/CertificateEntity.java:40",
+      "accion": "Mantener."
+    },
+    {
+      "estado": "Cubierto",
+      "criterio": "Seguridad",
+      "nota": 5,
+      "titulo": "OAuth2 Resource Server configurado por env",
+      "detalle": "Resource server con issuer por variable de entorno.",
+      "ruta": "",
+      "accion": "Mantener."
+    },
+    {
+      "estado": "Cubierto",
+      "criterio": "Seguridad",
+      "nota": 5,
+      "titulo": "Autorización en operaciones sensibles",
+      "detalle": "Roles exigidos en las operaciones de escritura.",
+      "ruta": "src/main/java/pe/edu/vallegrande/fideinexus/certificate/infrastructure/adapter/in/rest/controller/CertificateRest.java:78",
+      "accion": "Mantener."
+    },
+    {
+      "estado": "Cubierto",
+      "criterio": "Seguridad",
+      "nota": 5,
+      "titulo": "Roles en constantes",
+      "detalle": "Catálogo de roles en KeycloakRoleConverter.",
+      "ruta": "src/main/java/pe/edu/vallegrande/fideinexus/certificate/infrastructure/security/KeycloakRoleConverter.java",
+      "accion": "Mantener."
+    },
+    {
+      "estado": "Cubierto",
+      "criterio": "Seguridad",
+      "nota": 5,
+      "titulo": "No confía identidad ni roles del body",
+      "detalle": "La identidad y el tenant salen del token, no del body.",
+      "ruta": "",
+      "accion": "Mantener."
+    },
+    {
+      "estado": "Cubierto",
+      "criterio": "Gateway",
+      "nota": 5,
+      "titulo": "Compatible con la identidad que reenvía el gateway",
+      "detalle": "Valida el mismo JWT que reenvía el gateway en Authorization.",
+      "ruta": "",
+      "accion": "Mantener."
+    },
+    {
+      "estado": "n/a",
+      "criterio": "Comms entre MS",
+      "nota": "n/a",
+      "titulo": "Propaga identidad en llamadas salientes",
+      "detalle": "No llama a otros microservicios.",
+      "ruta": "",
+      "accion": "Mantener."
+    },
+    {
+      "estado": "Cubierto",
+      "criterio": "Config / env",
+      "nota": 5,
+      "titulo": "Sin secretos en el repositorio",
+      "detalle": "No hay secretos versionados; .env está ignorado.",
+      "ruta": "",
+      "accion": "Mantener."
+    },
+    {
+      "estado": "Cubierto",
+      "criterio": "Config / env",
+      "nota": 5,
+      "titulo": ".env.example sin valores reales",
+      "detalle": ".env.example solo trae nombres y valores de ejemplo.",
+      "ruta": ".env.example",
+      "accion": "Mantener."
+    },
+    {
+      "estado": "Cubierto",
+      "criterio": "Config / env",
+      "nota": 5,
+      "titulo": "Configuración por perfiles dev y prod",
+      "detalle": "application-dev.yml y application-prod.yml.",
+      "ruta": "",
+      "accion": "Mantener."
+    },
+    {
+      "estado": "n/a",
+      "criterio": "Comms entre MS",
+      "nota": "n/a",
+      "titulo": "WebClient tipado y URLs por configuración",
+      "detalle": "No llama a otros microservicios.",
+      "ruta": "",
+      "accion": "Mantener."
+    },
+    {
+      "estado": "n/a",
+      "criterio": "Archivos",
+      "nota": "n/a",
+      "titulo": "Solo metadata del archivo en BD",
+      "detalle": "El servicio no recibe archivos.",
+      "ruta": "",
+      "accion": "Mantener."
+    },
+    {
+      "estado": "Cubierto",
+      "criterio": "Docker + README",
+      "nota": 5,
+      "titulo": "Dockerfile",
+      "detalle": "Dockerfile multi-etapa.",
+      "ruta": "Dockerfile",
+      "accion": "Mantener."
+    },
+    {
+      "estado": "Cubierto",
+      "criterio": "Docker + README",
+      "nota": 5,
+      "titulo": "README con propósito, puerto, path, stack, env, arranque y dependencias",
+      "detalle": "Cubre 7 de 7: propósito, puerto, ruta, stack, variables, arranque, dependencias.",
+      "ruta": "README.md",
+      "accion": "Mantener."
+    },
+    {
+      "estado": "Cubierto",
+      "criterio": "Pruebas",
+      "nota": 5,
+      "titulo": "Tests de dominio y casos de uso",
+      "detalle": "21 pruebas; capas cubiertas: domain, application.",
+      "ruta": "",
+      "accion": "Mantener."
+    },
+    {
+      "estado": "Cubierto",
+      "criterio": "Errores y logs",
+      "nota": 5,
+      "titulo": "Logs sin tokens, passwords ni secretos",
+      "detalle": "Los logs no imprimen tokens ni claves.",
+      "ruta": "",
+      "accion": "Mantener."
+    },
+    {
+      "estado": "Cubierto",
+      "criterio": "Errores y logs",
+      "nota": 5,
+      "titulo": "Errores sin trazas internas",
+      "detalle": "El manejador responde mensajes propios sin traza.",
+      "ruta": "",
+      "accion": "Mantener."
+    }
+  ],
+  "generado": "2026-10-23",
+  "items_checklist": 41
+}

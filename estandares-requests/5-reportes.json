@@ -1,0 +1,230 @@
+{
+  "items": [
+    {
+      "id": "PRS3-01",
+      "categoria": "Transaccional y arquitectura",
+      "criterio": "vg-ms-paymentservice reactivo (WebFlux + R2DBC) con @Transactional ACID.",
+      "prioridad": "Crítico",
+      "estado": "NO APLICA",
+      "observacion": "Es del microservicio de pagos. Este servicio es reactivo con WebFlux y R2DBC.",
+      "evidencia": ""
+    },
+    {
+      "id": "PRS3-02",
+      "categoria": "Transaccional y arquitectura",
+      "criterio": "Datos financieros con BigDecimal, sin Double ni Float.",
+      "prioridad": "Crítico",
+      "estado": "NO APLICA",
+      "observacion": "El servicio no maneja montos.",
+      "evidencia": ""
+    },
+    {
+      "id": "PRS3-03",
+      "categoria": "Transaccional y arquitectura",
+      "criterio": "Fechas ISO 8601 mapeadas como LocalDateTime.",
+      "prioridad": "Obligatorio",
+      "estado": "CUMPLE",
+      "observacion": "Fechas LocalDateTime serializadas en ISO 8601.",
+      "evidencia": "src/main/resources/application.yml:19"
+    },
+    {
+      "id": "PRS3-04",
+      "categoria": "Transaccional y arquitectura",
+      "criterio": "DTOs de respuesta REST con @JsonInclude(JsonInclude.Include.NON_NULL).",
+      "prioridad": "Recomendado",
+      "estado": "CUMPLE",
+      "observacion": "Los 7 DTOs de respuesta REST omiten los campos nulos.",
+      "evidencia": ""
+    },
+    {
+      "id": "PRS3-05",
+      "categoria": "Transaccional y arquitectura",
+      "criterio": "Zero-Trust con Keycloak: OAuth2 Resource Server y JWT RS256.",
+      "prioridad": "Seguridad",
+      "estado": "CUMPLE",
+      "observacion": "Valida los JWT de Keycloak con su JWKS.",
+      "evidencia": ""
+    },
+    {
+      "id": "PRS3-06",
+      "categoria": "Reportes client-side",
+      "criterio": "Sin librerías de reportes en el backend (iText, Apache POI, JasperReports).",
+      "prioridad": "Obligatorio",
+      "estado": "CUMPLE",
+      "observacion": "El backend solo entrega JSON; PDF y Excel se generan en el front.",
+      "evidencia": "pom.xml"
+    },
+    {
+      "id": "PRS3-07",
+      "categoria": "Reportes client-side",
+      "criterio": "Comprobante de pago: Comprobante_Pago_{ID}.pdf.",
+      "prioridad": "Obligatorio",
+      "estado": "NO APLICA",
+      "observacion": "Nombre de archivo de Pagos o Libros, generado en el front; no corresponde a este servicio.",
+      "evidencia": ""
+    },
+    {
+      "id": "PRS3-08",
+      "categoria": "Reportes client-side",
+      "criterio": "Consolidado de ingresos: Reporte_Ingresos_{YYYY-MM-DD}.xlsx.",
+      "prioridad": "Obligatorio",
+      "estado": "NO APLICA",
+      "observacion": "Nombre de archivo de Pagos o Libros, generado en el front; no corresponde a este servicio.",
+      "evidencia": ""
+    },
+    {
+      "id": "PRS3-09",
+      "categoria": "Reportes client-side",
+      "criterio": "Catálogo: Catalogo_Libros.pdf; inventario: Inventario_Stock_{YYYY-MM-DD}.xlsx.",
+      "prioridad": "Obligatorio",
+      "estado": "NO APLICA",
+      "observacion": "Nombre de archivo de Pagos o Libros, generado en el front; no corresponde a este servicio.",
+      "evidencia": ""
+    },
+    {
+      "id": "PRS3-10",
+      "categoria": "Integración y contratos HTTP",
+      "criterio": "GET /api/v1/payments/{id}/full enriquece el pago con WebClient.",
+      "prioridad": "Obligatorio",
+      "estado": "NO APLICA",
+      "observacion": "Es de Pagos.",
+      "evidencia": ""
+    },
+    {
+      "id": "PRS3-11",
+      "categoria": "Integración y contratos HTTP",
+      "criterio": "Códigos HTTP: 200, 201, 400, 401, 403, 404, 409, 500 y 503.",
+      "prioridad": "Crítico",
+      "estado": "CUMPLE",
+      "observacion": "Usa 200, 201, 400, 401, 403, 404, 409, 500 y 503. 400 es para peticiones que no se pueden leer; los datos inválidos responden 422 como pide el estándar de seguridad.",
+      "evidencia": ""
+    },
+    {
+      "id": "PRS3-12",
+      "categoria": "Integración y contratos HTTP",
+      "criterio": "Listas vacías devuelven 200 [], nunca 404.",
+      "prioridad": "Crítico",
+      "estado": "CUMPLE",
+      "observacion": "Las listas devuelven []; el 404 solo es para un id que no existe.",
+      "evidencia": ""
+    }
+  ],
+  "checklist_readme": [
+    {
+      "id": "PR-01",
+      "categoria": "Checklist antes de un PR",
+      "criterio": "Formato elegido según la audiencia y justificado en 02-formatos.",
+      "prioridad": "Obligatorio",
+      "estado": "NO APLICA",
+      "observacion": "Lo hace el servicio de reporte del front; este microservicio solo entrega JSON.",
+      "evidencia": ""
+    },
+    {
+      "id": "PR-02",
+      "categoria": "Checklist antes de un PR",
+      "criterio": "Lazy import de jspdf y xlsx, sin PDF ni Excel en el bundle inicial.",
+      "prioridad": "Obligatorio",
+      "estado": "NO APLICA",
+      "observacion": "Lo hace el servicio de reporte del front; este microservicio solo entrega JSON.",
+      "evidencia": ""
+    },
+    {
+      "id": "PR-03",
+      "categoria": "Checklist antes de un PR",
+      "criterio": "Nombre de archivo con el patrón de §6.4.",
+      "prioridad": "Obligatorio",
+      "estado": "NO APLICA",
+      "observacion": "El microservicio no arma archivos; el nombre lo pone el front.",
+      "evidencia": ""
+    },
+    {
+      "id": "PR-04",
+      "categoria": "Checklist antes de un PR",
+      "criterio": "Endpoint fuente documentado en 05-operaciones.",
+      "prioridad": "Obligatorio",
+      "estado": "CUMPLE",
+      "observacion": "Los endpoints que alimentan los reportes están documentados en la colección y en OpenAPI.",
+      "evidencia": "src/main/resources/doc/requests-collection.json"
+    },
+    {
+      "id": "PR-05",
+      "categoria": "Checklist antes de un PR",
+      "criterio": "Filtros de pantalla reflejados en la exportación.",
+      "prioridad": "Obligatorio",
+      "estado": "NO APLICA",
+      "observacion": "Lo hace el servicio de reporte del front; este microservicio solo entrega JSON.",
+      "evidencia": ""
+    },
+    {
+      "id": "PR-06",
+      "categoria": "Checklist antes de un PR",
+      "criterio": "Botón deshabilitado sin datos y spinner durante la generación.",
+      "prioridad": "Obligatorio",
+      "estado": "NO APLICA",
+      "observacion": "Lo hace el servicio de reporte del front; este microservicio solo entrega JSON.",
+      "evidencia": ""
+    },
+    {
+      "id": "PR-07",
+      "categoria": "Checklist antes de un PR",
+      "criterio": "Fechas ISO-8601 y montos sin Double.",
+      "prioridad": "Obligatorio",
+      "estado": "CUMPLE",
+      "observacion": "Fechas LocalDateTime serializadas en ISO 8601. El servicio no maneja montos.",
+      "evidencia": "src/main/resources/application.yml:19"
+    },
+    {
+      "id": "PR-08",
+      "categoria": "Checklist antes de un PR",
+      "criterio": "PDF externo con encabezado institucional y pie de paginación.",
+      "prioridad": "Obligatorio",
+      "estado": "NO APLICA",
+      "observacion": "Lo hace el servicio de reporte del front; este microservicio solo entrega JSON.",
+      "evidencia": ""
+    },
+    {
+      "id": "PR-09",
+      "categoria": "Checklist antes de un PR",
+      "criterio": "Descarga protegida con JWT y permiso reports:export.",
+      "prioridad": "Obligatorio",
+      "estado": "NO APLICA",
+      "observacion": "No expone descargas; los datos que usa el front ya van con JWT y rol.",
+      "evidencia": ""
+    },
+    {
+      "id": "PR-10",
+      "categoria": "Checklist antes de un PR",
+      "criterio": "Server-side solo con justificación y sin motores prohibidos.",
+      "prioridad": "Obligatorio",
+      "estado": "CUMPLE",
+      "observacion": "No genera reportes en el servidor ni tiene motores prohibidos.",
+      "evidencia": "pom.xml"
+    },
+    {
+      "id": "PR-11",
+      "categoria": "Checklist antes de un PR",
+      "criterio": "Patrón de plantilla y recursos elegido: A, B o C.",
+      "prioridad": "Obligatorio",
+      "estado": "NO APLICA",
+      "observacion": "Lo hace el servicio de reporte del front; este microservicio solo entrega JSON.",
+      "evidencia": ""
+    },
+    {
+      "id": "PR-12",
+      "categoria": "Checklist antes de un PR",
+      "criterio": "Servicio de reporte con pruebas de estructura y naming.",
+      "prioridad": "Obligatorio",
+      "estado": "NO APLICA",
+      "observacion": "Lo hace el servicio de reporte del front; este microservicio solo entrega JSON.",
+      "evidencia": ""
+    }
+  ],
+  "resumen": {
+    "porcentaje": 100.0,
+    "estado": "✅ APROBADO",
+    "cumple": 24,
+    "total": 24,
+    "bloqueantes": [],
+    "choques": []
+  }
+}

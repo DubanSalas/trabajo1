@@ -1,0 +1,33 @@
+{
+  "servicio": "vg-ms-preparation",
+  "estandares": {
+    "Arquitectura": {
+      "porcentaje": 100.0,
+      "estado": "APROBADO",
+      "criticos": []
+    },
+    "Base de datos": {
+      "porcentaje": 100.0,
+      "estado": "APROBADO",
+      "criticos": []
+    },
+    "Backend": {
+      "porcentaje": 100.0,
+      "estado": "CUMPLE",
+      "criticos": []
+    },
+    "Seguridad": {
+      "porcentaje": 97.7,
+      "estado": "OBSERVADO",
+      "criticos": [],
+      "observaciones": [
+        "SEC-003"
+      ]
+    },
+    "Reportes PRS3": {
+      "porcentaje": 100.0,
+      "estado": "APROBADO",
+      "criticos": []
+    }
+  }
+}

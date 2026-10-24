@@ -1,0 +1,507 @@
+{
+  "proyecto": "vg-ms-preparation",
+  "fecha": "2026-10-23",
+  "version_estandar": "1.0.0",
+  "auditor": "Jenkins · standards-ci (reglas automáticas)",
+  "alcance": "Repositorio vg-ms-preparation: código, configuración y pruebas.",
+  "componentes": [
+    {
+      "id": "vg-ms-preparation",
+      "tipo": "microservicio"
+    }
+  ],
+  "resultados": [
+    {
+      "estado": "CUMPLE",
+      "metodo": "mixto",
+      "evidencia": [
+        {
+          "archivo": "src/main/resources/application.yml",
+          "linea": 54,
+          "detalle": "El issuer de Keycloak llega por variable de entorno."
+        },
+        {
+          "archivo": "src/main/resources/application.yml",
+          "linea": 55,
+          "detalle": "Las claves públicas se leen del JWKS."
+        }
+      ],
+      "observacion": "Keycloak es el único proveedor; cada ambiente define su realm por variable de entorno.",
+      "recomendacion": "",
+      "regla": "SEC-001",
+      "componente": "vg-ms-preparation",
+      "severidad": ""
+    },
+    {
+      "estado": "CUMPLE",
+      "metodo": "estatico",
+      "evidencia": [
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/preparation/infrastructure/config/SecurityConfig.java",
+          "linea": 48,
+          "detalle": "Resource server OAuth 2.0 con JWT de Keycloak."
+        }
+      ],
+      "observacion": "Los tokens son JWT emitidos por Keycloak con OIDC.",
+      "recomendacion": "",
+      "regla": "SEC-002",
+      "componente": "vg-ms-preparation",
+      "severidad": ""
+    },
+    {
+      "estado": "PARCIAL",
+      "metodo": "manual",
+      "evidencia": [
+        {
+          "archivo": "docs/keycloak/prs-realm-export.json",
+          "linea": 858,
+          "detalle": "prs-frontend y fideiNexus aceptan cualquier redirect URI."
+        },
+        {
+          "archivo": "docs/keycloak/prs-realm-export.json",
+          "linea": 920,
+          "detalle": "Cliente propio para Postman, público y separado del frontend."
+        }
+      ],
+      "observacion": "Revisión manual del 2026-10-22: Los clientes están separados por aplicación y prs-postman cumple: público, Authorization Code con PKCE S256, sin Direct Access Grants y con redirect exacto. prs-frontend y fideiNexus mantienen Direct Access Grants porque la web inicia sesión con contraseña, y aceptan cualquier redirect URI.",
+      "recomendacion": "Restringir Valid redirect URIs y Web origins de prs-frontend y fideiNexus al dominio real de la web, y migrar el login de la web a Authorization Code con PKCE para apagar Direct Access Grants.",
+      "regla": "SEC-003",
+      "componente": "vg-ms-preparation",
+      "severidad": "Alta"
+    },
+    {
+      "estado": "CUMPLE",
+      "metodo": "mixto",
+      "evidencia": [
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/preparation/infrastructure/config/SecurityConfig.java",
+          "linea": 48,
+          "detalle": "Valida firma con el JWKS."
+        },
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/preparation/infrastructure/config/SecurityConfig.java",
+          "linea": 13,
+          "detalle": "Valida issuer, vigencia y datos del token."
+        }
+      ],
+      "observacion": "Firma, issuer y vencimiento se validan en cada petición.",
+      "recomendacion": "",
+      "regla": "SEC-004",
+      "componente": "vg-ms-preparation",
+      "severidad": ""
+    },
+    {
+      "estado": "CUMPLE",
+      "metodo": "estatico",
+      "evidencia": [
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/preparation/infrastructure/config/SecurityConfig.java",
+          "linea": 44,
+          "detalle": "Todo lo no público exige autenticación."
+        },
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/preparation/infrastructure/adapter/in/rest/controller/PreparationRest.java",
+          "linea": 70,
+          "detalle": "Los roles se comprueban en el backend."
+        }
+      ],
+      "observacion": "La autorización se decide en el servicio, no en el front.",
+      "recomendacion": "",
+      "regla": "SEC-005",
+      "componente": "vg-ms-preparation",
+      "severidad": ""
+    },
+    {
+      "estado": "CUMPLE",
+      "metodo": "estatico",
+      "evidencia": [
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/preparation/infrastructure/security/KeycloakRoleConverter.java",
+          "linea": 15,
+          "detalle": "Roles: FELIGRES, PARROCO, SECRETARIO, SUPERADMIN."
+        }
+      ],
+      "observacion": "Los roles coinciden con el catálogo del PRS.",
+      "recomendacion": "",
+      "regla": "SEC-006",
+      "componente": "vg-ms-preparation",
+      "severidad": ""
+    },
+    {
+      "estado": "CUMPLE",
+      "metodo": "estatico",
+      "evidencia": [
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/preparation/infrastructure/config/SecurityConfig.java",
+          "linea": 43,
+          "detalle": "Solo las rutas públicas quedan abiertas."
+        },
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/preparation/infrastructure/config/SecurityConfig.java",
+          "linea": 44,
+          "detalle": "El resto exige token."
+        }
+      ],
+      "observacion": "Cada endpoint pide el mínimo necesario.",
+      "recomendacion": "",
+      "regla": "SEC-007",
+      "componente": "vg-ms-preparation",
+      "severidad": ""
+    },
+    {
+      "estado": "CUMPLE",
+      "metodo": "estatico",
+      "evidencia": [
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/preparation/infrastructure/adapter/out/security/JwtTenantContextStorageAdapter.java",
+          "linea": 42,
+          "detalle": "El tenant sale del token."
+        }
+      ],
+      "observacion": "El tenant se toma del JWT; el cliente no lo elige.",
+      "recomendacion": "",
+      "regla": "SEC-008",
+      "componente": "vg-ms-preparation",
+      "severidad": ""
+    },
+    {
+      "estado": "CUMPLE",
+      "metodo": "estatico",
+      "evidencia": [
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/preparation/domain/port/out/PreparationRepositoryPort.java",
+          "linea": 13,
+          "detalle": "Las consultas filtran por tenant."
+        }
+      ],
+      "observacion": "Toda consulta incluye el tenant.",
+      "recomendacion": "",
+      "regla": "SEC-009",
+      "componente": "vg-ms-preparation",
+      "severidad": ""
+    },
+    {
+      "estado": "CUMPLE",
+      "metodo": "estatico",
+      "evidencia": [
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/preparation/domain/exception/TenantAccessException.java",
+          "linea": 4,
+          "detalle": "Se comprueba la parroquia antes de devolver datos."
+        },
+        {
+          "archivo": "src/test/java/pe/edu/vallegrande/fideinexus/preparation/application/usecase/PreparationTenantIsolationTest.java",
+          "linea": 80,
+          "detalle": "Prueba de acceso desde otra parroquia."
+        }
+      ],
+      "observacion": "Una parroquia no ve ni cambia datos de otra.",
+      "recomendacion": "",
+      "regla": "SEC-010",
+      "componente": "vg-ms-preparation",
+      "severidad": ""
+    },
+    {
+      "estado": "CUMPLE",
+      "metodo": "estatico",
+      "evidencia": [
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/preparation/infrastructure/config/WebClientConfig.java",
+          "linea": 37,
+          "detalle": "Las llamadas a otros servicios llevan el token del usuario."
+        }
+      ],
+      "observacion": "La identidad se propaga entre servicios.",
+      "recomendacion": "",
+      "regla": "SEC-011",
+      "componente": "vg-ms-preparation",
+      "severidad": ""
+    },
+    {
+      "estado": "CUMPLE",
+      "metodo": "manual",
+      "evidencia": [
+        {
+          "archivo": "PRS-GATEWAY/docker-compose.dokploy.yml",
+          "linea": 279,
+          "detalle": "El servicio no publica puertos al host; solo el gateway."
+        },
+        {
+          "archivo": "PRS-GATEWAY/vg-ms-gateway/src/main/resources/application-prod.yml",
+          "linea": 27,
+          "detalle": "El gateway enruta solo la API; swagger y actuator no tienen ruta pública."
+        }
+      ],
+      "observacion": "Revisión manual del 2026-10-22: La evidencia está en PRS-GATEWAY, fuera del repositorio del servicio.",
+      "recomendacion": "",
+      "regla": "SEC-012",
+      "componente": "vg-ms-preparation",
+      "severidad": ""
+    },
+    {
+      "estado": "CUMPLE",
+      "metodo": "estatico",
+      "evidencia": [
+        {
+          "archivo": "src/main/resources/application.yml",
+          "linea": 80,
+          "detalle": "Orígenes permitidos por variable de entorno."
+        }
+      ],
+      "observacion": "Cada ambiente define sus orígenes; no hay comodín.",
+      "recomendacion": "",
+      "regla": "SEC-013",
+      "componente": "vg-ms-preparation",
+      "severidad": ""
+    },
+    {
+      "estado": "CUMPLE",
+      "metodo": "estatico",
+      "evidencia": [
+        {
+          "archivo": ".gitignore",
+          "linea": 24,
+          "detalle": ".env está ignorado por git."
+        }
+      ],
+      "observacion": "Los secretos viven en variables de entorno; .env no se versiona.",
+      "recomendacion": "",
+      "regla": "SEC-014",
+      "componente": "vg-ms-preparation",
+      "severidad": ""
+    },
+    {
+      "estado": "CUMPLE",
+      "metodo": "mixto",
+      "evidencia": [
+        {
+          "archivo": "src/main/resources/application-prod.yml",
+          "linea": 7,
+          "detalle": "La conexión a la base exige TLS."
+        },
+        {
+          "archivo": "src/main/resources/application.yml",
+          "linea": 22,
+          "detalle": "La conexión a la base exige TLS."
+        },
+        {
+          "archivo": "src/main/resources/application.yml",
+          "linea": 22,
+          "detalle": "La base exige TLS."
+        }
+      ],
+      "observacion": "Revisión manual del 2026-10-22: Las llamadas entre contenedores van por la red interna de Docker, no por Internet.",
+      "recomendacion": "",
+      "regla": "SEC-015",
+      "componente": "vg-ms-preparation",
+      "severidad": ""
+    },
+    {
+      "estado": "CUMPLE",
+      "metodo": "estatico",
+      "evidencia": [
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/preparation/infrastructure/adapter/in/rest/controller/PreparationRest.java",
+          "linea": 125,
+          "detalle": "Se valida el cuerpo al entrar."
+        },
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/preparation/infrastructure/adapter/in/rest/dto/request/ChangePreparationStatusRequest.java",
+          "linea": 9,
+          "detalle": "Reglas de validación en el request."
+        }
+      ],
+      "observacion": "La entrada se valida en el backend aunque el front ya valide.",
+      "recomendacion": "",
+      "regla": "SEC-016",
+      "componente": "vg-ms-preparation",
+      "severidad": ""
+    },
+    {
+      "estado": "CUMPLE",
+      "metodo": "mixto",
+      "evidencia": [
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/preparation/infrastructure/exception/GlobalExceptionHandler.java",
+          "linea": 32,
+          "detalle": "Respuestas diferenciadas: BAD_REQUEST, CONFLICT, FORBIDDEN, INTERNAL_SERVER_ERROR, METHOD_NOT_ALLOWED, NOT_ACCEPTABLE, NOT_FOUND, SERVICE_UNAVAILABLE, UNPROCESSABLE_ENTITY, UNSUPPORTED_MEDIA_TYPE."
+        }
+      ],
+      "observacion": "Cada error tiene su código y un mensaje sin detalles internos.",
+      "recomendacion": "",
+      "regla": "SEC-017",
+      "componente": "vg-ms-preparation",
+      "severidad": ""
+    },
+    {
+      "estado": "CUMPLE",
+      "metodo": "estatico",
+      "evidencia": [
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/preparation/infrastructure/exception/GlobalExceptionHandler.java",
+          "linea": 37,
+          "detalle": "Logs revisados."
+        }
+      ],
+      "observacion": "Los logs no imprimen tokens ni datos sensibles.",
+      "recomendacion": "",
+      "regla": "SEC-018",
+      "componente": "vg-ms-preparation",
+      "severidad": ""
+    },
+    {
+      "estado": "CUMPLE",
+      "metodo": "estatico",
+      "evidencia": [
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/preparation/domain/model/AuditLog.java",
+          "linea": 12,
+          "detalle": "Las operaciones de escritura dejan registro de auditoría."
+        }
+      ],
+      "observacion": "Crear, editar y eliminar quedan auditados.",
+      "recomendacion": "",
+      "regla": "SEC-019",
+      "componente": "vg-ms-preparation",
+      "severidad": ""
+    },
+    {
+      "estado": "CUMPLE",
+      "metodo": "estatico",
+      "evidencia": [
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/preparation/domain/exception/TenantAccessException.java",
+          "linea": 4,
+          "detalle": "Se comprueba que el recurso sea de la parroquia del usuario."
+        }
+      ],
+      "observacion": "Antes de leer o cambiar un recurso se valida su pertenencia.",
+      "recomendacion": "",
+      "regla": "SEC-020",
+      "componente": "vg-ms-preparation",
+      "severidad": ""
+    },
+    {
+      "estado": "CUMPLE",
+      "metodo": "estatico",
+      "evidencia": [
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/preparation/infrastructure/adapter/out/security/JwtTenantContextStorageAdapter.java",
+          "linea": 22,
+          "detalle": "El contexto sale del token, no del body."
+        }
+      ],
+      "observacion": "El cliente no puede cambiar tenant ni autor.",
+      "recomendacion": "",
+      "regla": "SEC-021",
+      "componente": "vg-ms-preparation",
+      "severidad": ""
+    },
+    {
+      "estado": "CUMPLE",
+      "metodo": "estatico",
+      "evidencia": [
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/preparation/infrastructure/adapter/out/persistence/r2dbc/entity/PreparationEntity.java",
+          "linea": 32,
+          "detalle": "Se detectan duplicados o colisiones y se responde 409."
+        }
+      ],
+      "observacion": "Un reintento no duplica registros.",
+      "recomendacion": "",
+      "regla": "SEC-022",
+      "componente": "vg-ms-preparation",
+      "severidad": ""
+    }
+  ],
+  "pruebas": [
+    {
+      "estado": "REQUIERE_REVISION_MANUAL",
+      "metodo": "manual",
+      "evidencia": [],
+      "observacion": "No hay una prueba automatizada que lo cubra.",
+      "recomendacion": "",
+      "id": "T01"
+    },
+    {
+      "estado": "REQUIERE_REVISION_MANUAL",
+      "metodo": "manual",
+      "evidencia": [],
+      "observacion": "No hay una prueba automatizada que lo cubra.",
+      "recomendacion": "",
+      "id": "T02"
+    },
+    {
+      "estado": "REQUIERE_REVISION_MANUAL",
+      "metodo": "manual",
+      "evidencia": [],
+      "observacion": "No hay una prueba automatizada que lo cubra.",
+      "recomendacion": "",
+      "id": "T03"
+    },
+    {
+      "estado": "CUMPLE",
+      "metodo": "estatico",
+      "evidencia": [
+        {
+          "archivo": "src/test/java/pe/edu/vallegrande/fideinexus/preparation/application/usecase/PreparationTenantIsolationTest.java",
+          "linea": 80,
+          "detalle": "Prueba automatizada que lo cubre."
+        }
+      ],
+      "observacion": "",
+      "recomendacion": "",
+      "id": "T04"
+    },
+    {
+      "estado": "NO_APLICA",
+      "metodo": "estatico",
+      "evidencia": [],
+      "observacion": "La prueba es para un docente que usa otra clase; en una parroquia no hay clases ni docentes.",
+      "recomendacion": "",
+      "id": "T05"
+    },
+    {
+      "estado": "REQUIERE_REVISION_MANUAL",
+      "metodo": "manual",
+      "evidencia": [],
+      "observacion": "No hay una prueba automatizada que lo cubra.",
+      "recomendacion": "",
+      "id": "T06"
+    },
+    {
+      "estado": "REQUIERE_REVISION_MANUAL",
+      "metodo": "manual",
+      "evidencia": [],
+      "observacion": "No hay una prueba automatizada que lo cubra.",
+      "recomendacion": "",
+      "id": "T07"
+    },
+    {
+      "estado": "REQUIERE_REVISION_MANUAL",
+      "metodo": "manual",
+      "evidencia": [],
+      "observacion": "No hay una prueba automatizada que lo cubra.",
+      "recomendacion": "",
+      "id": "T08"
+    },
+    {
+      "estado": "REQUIERE_REVISION_MANUAL",
+      "metodo": "manual",
+      "evidencia": [],
+      "observacion": "No hay una prueba automatizada que lo cubra.",
+      "recomendacion": "",
+      "id": "T09"
+    }
+  ],
+  "checklist_manual": {
+    "12": {
+      "estado": "CUMPLE",
+      "comentario": "La skill trae las mismas 22 reglas que el kit, y el pipeline de cada servicio las evalúa con el mismo kit."
+    }
+  },
+  "limitaciones": [
+    "SEC-003, SEC-012 y la parte de despliegue de SEC-015 se toman de la revisión manual del 2026-10-22.",
+    "Las pruebas dinámicas contra el ambiente desplegado no se ejecutan en este análisis."
+  ]
+}

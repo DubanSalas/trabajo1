@@ -1,0 +1,6 @@
+vg-ms-certificate
+  Arquitectura   100.0%  APROBADO
+  Base de datos  100.0%  APROBADO
+  Backend        100.0%  CUMPLE
+  Seguridad       97.7%  OBSERVADO  observaciones: SEC-003
+  Reportes PRS3  100.0%  APROBADO

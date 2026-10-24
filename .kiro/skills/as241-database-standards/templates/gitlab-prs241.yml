@@ -1,0 +1,13 @@
+# Incluye este archivo desde el .gitlab-ci.yml de un repositorio que contenga
+# microservicios vg-ms-* y la carpeta skills/as241-database-standards.
+prs241-compliance:
+  image: python:3.12-slim
+  stage: test
+  script:
+    - python -m pip install --disable-pip-version-check openpyxl
+    - python skills/as241-database-standards/scripts/ai_standards_auditor.py --all --root . --output PRS241_Reporte_TODOS.xlsx
+  artifacts:
+    when: always
+    paths:
+      - PRS241_Reporte_TODOS.xlsx
+    expire_in: 30 days

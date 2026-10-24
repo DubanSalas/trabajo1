@@ -1,0 +1,1150 @@
+{
+  "proyecto": "vg-ms-organizationservice",
+  "paquete_base": "pe.edu.vallegrande.fideinexus.organization",
+  "base_de_datos": "PostgreSQL con R2DBC",
+  "fecha": "2026-10-22",
+  "estandar": "PR241 Arquitectura hexagonal, revisión 2026-10-14",
+  "porcentaje": 100.0,
+  "dictamen": "APROBADO",
+  "conteo": {
+    "CUMPLE": 41,
+    "OBSERVADO": 0,
+    "NO_CUMPLE": 0,
+    "NO_APLICA": 2,
+    "REVISIÓN MANUAL": 0
+  },
+  "criterios": [
+    {
+      "id": "ARQ-01",
+      "seccion": "Árbol estándar",
+      "nombre": "Tres capas domain, application e infrastructure",
+      "severidad": "CRÍTICA",
+      "que_cambiar": "Organiza el código en las tres capas bajo la raíz del servicio.",
+      "opciones": [
+        "Mover los paquetes existentes a domain/application/infrastructure"
+      ],
+      "ejemplo": "pe/edu/vallegrande/{producto}/{contexto}/{domain,application,infrastructure}",
+      "estado": "CUMPLE",
+      "evidencia": [
+        {
+          "archivo": "pe.edu.vallegrande.fideinexus.organization",
+          "linea": 1,
+          "contenido": "application, domain, infrastructure",
+          "nota": "Paquetes de primer nivel"
+        }
+      ],
+      "detalle": "La raíz solo contiene la clase Application y las tres capas."
+    },
+    {
+      "id": "ARQ-02",
+      "seccion": "Árbol estándar",
+      "nombre": "Raíz pe.edu.vallegrande.{producto}.{contexto} en minúsculas",
+      "severidad": "MEDIA",
+      "que_cambiar": "Usa la raíz del producto del PRS y el contexto del servicio, en minúsculas y sin guion bajo.",
+      "opciones": [
+        "Renombrar el paquete en un commit propio y actualizar los imports"
+      ],
+      "ejemplo": "pe.edu.vallegrande.fideinexus.event",
+      "estado": "CUMPLE",
+      "evidencia": [
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/organization/OrganizationServiceApplication.java",
+          "linea": 1,
+          "contenido": "package pe.edu.vallegrande.fideinexus.organization;",
+          "nota": ""
+        }
+      ],
+      "detalle": "Raíz pe.edu.vallegrande.fideinexus.organization: producto fideinexus, contexto organization."
+    },
+    {
+      "id": "ARQ-03",
+      "seccion": "Árbol estándar",
+      "nombre": "domain con model, vo, exception y port",
+      "severidad": "ALTA",
+      "que_cambiar": "Deja en domain solo model, vo, exception y port/in, port/out.",
+      "opciones": [
+        "Mover entidades del negocio a domain/model",
+        "Mover value objects y enums a domain/vo",
+        "Mover las excepciones de negocio a domain/exception"
+      ],
+      "ejemplo": "domain/model/Event.java, domain/vo/EventStatus.java, domain/port/in/EventUseCase.java",
+      "estado": "CUMPLE",
+      "evidencia": [
+        {
+          "archivo": "domain/exception",
+          "linea": 1,
+          "contenido": "",
+          "nota": ""
+        },
+        {
+          "archivo": "domain/model",
+          "linea": 1,
+          "contenido": "",
+          "nota": ""
+        },
+        {
+          "archivo": "domain/port",
+          "linea": 1,
+          "contenido": "",
+          "nota": ""
+        },
+        {
+          "archivo": "domain/vo",
+          "linea": 1,
+          "contenido": "",
+          "nota": ""
+        }
+      ],
+      "detalle": "domain contiene exception, model, port, vo; puertos: in, out."
+    },
+    {
+      "id": "ARQ-04",
+      "seccion": "Árbol estándar",
+      "nombre": "application con usecase",
+      "severidad": "ALTA",
+      "que_cambiar": "Implementa cada acción de negocio en application/usecase; dto y mapper solo si la aplicación los usa.",
+      "opciones": [
+        "Mover los servicios de aplicación a application/usecase"
+      ],
+      "ejemplo": "application/usecase/EventService.java",
+      "estado": "CUMPLE",
+      "evidencia": [
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/organization/application/usecase/AuditService.java",
+          "linea": 23,
+          "contenido": "public class AuditService implements AuditUseCase {",
+          "nota": ""
+        },
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/organization/application/usecase/OrganizationService.java",
+          "linea": 28,
+          "contenido": "public class OrganizationService implements OrganizationUseCase {",
+          "nota": ""
+        }
+      ],
+      "detalle": "2 casos de uso en application/usecase."
+    },
+    {
+      "id": "ARQ-05",
+      "seccion": "Árbol estándar",
+      "nombre": "infrastructure con adapter/in, adapter/out, security, exception y config",
+      "severidad": "ALTA",
+      "que_cambiar": "Deja REST en adapter/in/rest y persistencia, clientes y storage en adapter/out.",
+      "opciones": [
+        "Mover controllers a adapter/in/rest/controller",
+        "Mover repositorios y entidades a adapter/out/persistence/{tecnologia}"
+      ],
+      "ejemplo": "infrastructure/adapter/in/rest/controller, infrastructure/adapter/out/persistence/r2dbc",
+      "estado": "CUMPLE",
+      "evidencia": [
+        {
+          "archivo": "infrastructure/adapter",
+          "linea": 1,
+          "contenido": "",
+          "nota": ""
+        },
+        {
+          "archivo": "infrastructure/config",
+          "linea": 1,
+          "contenido": "",
+          "nota": ""
+        },
+        {
+          "archivo": "infrastructure/exception",
+          "linea": 1,
+          "contenido": "",
+          "nota": ""
+        },
+        {
+          "archivo": "infrastructure/security",
+          "linea": 1,
+          "contenido": "",
+          "nota": ""
+        }
+      ],
+      "detalle": "adapter/in: rest; adapter/out: persistence."
+    },
+    {
+      "id": "ARQ-06",
+      "seccion": "Responsabilidades y dependencias",
+      "nombre": "domain sin Spring, HTTP ni base de datos",
+      "severidad": "CRÍTICA",
+      "que_cambiar": "Quita del dominio las anotaciones y los imports de Spring, Jakarta, HTTP o persistencia.",
+      "opciones": [
+        "Mover las anotaciones de persistencia a la entity",
+        "Mover las validaciones de Jakarta al DTO de request"
+      ],
+      "ejemplo": "@Table solo en adapter/out/persistence/r2dbc/entity",
+      "estado": "CUMPLE",
+      "evidencia": [],
+      "detalle": "24 clases de domain sin Spring, HTTP ni persistencia."
+    },
+    {
+      "id": "ARQ-07",
+      "seccion": "Responsabilidades y dependencias",
+      "nombre": "domain no depende de application ni infrastructure",
+      "severidad": "CRÍTICA",
+      "que_cambiar": "El dominio no importa clases de las otras capas.",
+      "opciones": [
+        "Mover el tipo al dominio",
+        "Declarar un puerto en domain/port/out"
+      ],
+      "ejemplo": "domain/model/Event.java sin imports de infrastructure",
+      "estado": "CUMPLE",
+      "evidencia": [],
+      "detalle": "El dominio solo depende de sí mismo, Java y Reactor."
+    },
+    {
+      "id": "ARQ-08",
+      "seccion": "Responsabilidades y dependencias",
+      "nombre": "Los casos de uso dependen de puertos, no de Spring Data ni de clientes concretos",
+      "severidad": "CRÍTICA",
+      "que_cambiar": "application solo importa el dominio; lo que necesita de afuera llega por un puerto de salida.",
+      "opciones": [
+        "Declarar {Entidad}RepositoryPort en domain/port/out",
+        "Inyectar el puerto en vez del repositorio o el WebClient"
+      ],
+      "ejemplo": "private final EventRepositoryPort eventRepository;",
+      "estado": "CUMPLE",
+      "evidencia": [],
+      "detalle": "Usa los puertos: AuditLogRepositoryPort, OrganizationRepositoryPort."
+    },
+    {
+      "id": "ARQ-09",
+      "seccion": "Responsabilidades y dependencias",
+      "nombre": "Puertos de salida implementados por adaptadores",
+      "severidad": "ALTA",
+      "que_cambiar": "Cada interfaz de domain/port/out tiene un adaptador en infrastructure/adapter/out que la implementa.",
+      "opciones": [
+        "Crear {Entidad}PersistenceAdapter o {Cliente}ClientAdapter",
+        "Usar el repositorio Spring Data solo dentro del adaptador"
+      ],
+      "ejemplo": "EventPersistenceAdapter implements EventRepositoryPort",
+      "estado": "CUMPLE",
+      "evidencia": [
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/organization/infrastructure/adapter/out/persistence/r2dbc/AuditLogPersistenceAdapter.java",
+          "linea": 17,
+          "contenido": "public class AuditLogPersistenceAdapter implements AuditLogRepositoryPort {",
+          "nota": "implementa AuditLogRepositoryPort"
+        },
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/organization/infrastructure/adapter/out/persistence/r2dbc/OrganizationPersistenceAdapter.java",
+          "linea": 23,
+          "contenido": "public class OrganizationPersistenceAdapter implements OrganizationRepositoryPort {",
+          "nota": "implementa OrganizationRepositoryPort"
+        }
+      ],
+      "detalle": "2 puertos de salida, todos implementados en adapter/out."
+    },
+    {
+      "id": "ARQ-10",
+      "seccion": "Responsabilidades y dependencias",
+      "nombre": "El controller mapea y delega en el puerto de entrada",
+      "severidad": "ALTA",
+      "que_cambiar": "El *Rest depende de domain/port/in y de su mapper; no usa repositorios, clientes ni casos de uso concretos.",
+      "opciones": [
+        "Inyectar {Entidad}UseCase en el controller",
+        "Mover la lógica del controller al caso de uso"
+      ],
+      "ejemplo": "private final EventUseCase eventService;",
+      "estado": "CUMPLE",
+      "evidencia": [
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/organization/infrastructure/adapter/in/rest/controller/AdminOrganizationRest.java",
+          "linea": 22,
+          "contenido": "import pe.edu.vallegrande.fideinexus.organization.domain.port.in.OrganizationUseCase;",
+          "nota": "usa el puerto de entrada"
+        },
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/organization/infrastructure/adapter/in/rest/controller/OrganizationRest.java",
+          "linea": 13,
+          "contenido": "import pe.edu.vallegrande.fideinexus.organization.domain.port.in.OrganizationUseCase;",
+          "nota": "usa el puerto de entrada"
+        }
+      ],
+      "detalle": "2 controllers delegan en port/in."
+    },
+    {
+      "id": "ARQ-11",
+      "seccion": "Responsabilidades y dependencias",
+      "nombre": "Los casos de uso implementan su puerto de entrada",
+      "severidad": "ALTA",
+      "que_cambiar": "Cada {Entidad}UseCase de domain/port/in lo implementa una clase de application/usecase.",
+      "opciones": [
+        "Declarar el puerto de entrada",
+        "Hacer que el servicio implemente el puerto"
+      ],
+      "ejemplo": "public class EventService implements EventUseCase",
+      "estado": "CUMPLE",
+      "evidencia": [
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/organization/application/usecase/AuditService.java",
+          "linea": 23,
+          "contenido": "public class AuditService implements AuditUseCase {",
+          "nota": "implementa AuditUseCase"
+        },
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/organization/application/usecase/OrganizationService.java",
+          "linea": 28,
+          "contenido": "public class OrganizationService implements OrganizationUseCase {",
+          "nota": "implementa OrganizationUseCase"
+        }
+      ],
+      "detalle": "2 puertos de entrada implementados."
+    },
+    {
+      "id": "ARQ-12",
+      "seccion": "Árbol estándar",
+      "nombre": "Sin clases que el servicio no use",
+      "severidad": "MEDIA",
+      "que_cambiar": "Elimina las clases que nadie referencia y no son componentes de Spring.",
+      "opciones": [
+        "Borrar la clase",
+        "Usarla donde corresponde"
+      ],
+      "ejemplo": "",
+      "estado": "CUMPLE",
+      "evidencia": [],
+      "detalle": "Todas las clases se usan o son componentes de Spring."
+    },
+    {
+      "id": "MAP-01",
+      "seccion": "Mappers y modelos por frontera",
+      "nombre": "Cada frontera tiene su mapper y no hay mappers vacíos",
+      "severidad": "ALTA",
+      "que_cambiar": "REST, persistencia y cada cliente externo convierten en un mapper de su carpeta.",
+      "opciones": [
+        "Crear el mapper en adapter/in/rest/mapper",
+        "Mover la conversión del DTO remoto a client/{cliente}/mapper"
+      ],
+      "ejemplo": "adapter/out/persistence/r2dbc/mapper/EventMapper.java",
+      "estado": "CUMPLE",
+      "evidencia": [
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/organization/infrastructure/adapter/in/rest/mapper/OrganizationRestMapper.java",
+          "linea": 12,
+          "contenido": "public class OrganizationRestMapper {",
+          "nota": "REST"
+        },
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/organization/infrastructure/adapter/out/persistence/r2dbc/mapper/AuditLogMapper.java",
+          "linea": 8,
+          "contenido": "public final class AuditLogMapper {",
+          "nota": "Persistencia"
+        },
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/organization/infrastructure/adapter/out/persistence/r2dbc/mapper/OrganizationMapper.java",
+          "linea": 13,
+          "contenido": "public final class OrganizationMapper {",
+          "nota": "Persistencia"
+        }
+      ],
+      "detalle": "2 fronteras con su mapper."
+    },
+    {
+      "id": "NOM-01",
+      "seccion": "Convenciones de nombres",
+      "nombre": "Controllers {Entidad}Rest en adapter/in/rest/controller",
+      "severidad": "ALTA",
+      "que_cambiar": "Nombra los controllers {Entidad}Rest, nunca Controller, dentro de adapter/in/rest/controller.",
+      "opciones": [
+        "Renombrar la clase",
+        "Moverla a la carpeta controller"
+      ],
+      "ejemplo": "AdminEventRest, EventRest",
+      "estado": "CUMPLE",
+      "evidencia": [
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/organization/infrastructure/adapter/in/rest/controller/AdminOrganizationRest.java",
+          "linea": 40,
+          "contenido": "public class AdminOrganizationRest {",
+          "nota": ""
+        },
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/organization/infrastructure/adapter/in/rest/controller/OrganizationRest.java",
+          "linea": 28,
+          "contenido": "public class OrganizationRest {",
+          "nota": ""
+        }
+      ],
+      "detalle": "2 controllers *Rest bien ubicados."
+    },
+    {
+      "id": "NOM-02",
+      "seccion": "Convenciones de nombres",
+      "nombre": "Puertos {Entidad}UseCase y *RepositoryPort, *ClientPort, *StoragePort",
+      "severidad": "MEDIA",
+      "que_cambiar": "Los puertos de entrada terminan en UseCase; los de salida en Port con el uso al que sirven.",
+      "opciones": [
+        "Renombrar el puerto"
+      ],
+      "ejemplo": "EventUseCase, EventRepositoryPort, ImageStoragePort",
+      "estado": "CUMPLE",
+      "evidencia": [
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/organization/domain/port/in/AuditUseCase.java",
+          "linea": 10,
+          "contenido": "public interface AuditUseCase {",
+          "nota": ""
+        },
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/organization/domain/port/in/OrganizationUseCase.java",
+          "linea": 10,
+          "contenido": "public interface OrganizationUseCase {",
+          "nota": ""
+        },
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/organization/domain/port/out/AuditLogRepositoryPort.java",
+          "linea": 7,
+          "contenido": "public interface AuditLogRepositoryPort {",
+          "nota": ""
+        },
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/organization/domain/port/out/OrganizationRepositoryPort.java",
+          "linea": 9,
+          "contenido": "public interface OrganizationRepositoryPort {",
+          "nota": ""
+        }
+      ],
+      "detalle": "2 puertos de entrada y 2 de salida bien nombrados."
+    },
+    {
+      "id": "NOM-03",
+      "seccion": "Convenciones de nombres",
+      "nombre": "Casos de uso {Entidad}Service o {Acción}{Entidad}UseCase",
+      "severidad": "MEDIA",
+      "que_cambiar": "Nombra las clases de application/usecase {Entidad}Service o {Acción}{Entidad}UseCase.",
+      "opciones": [
+        "Renombrar la clase"
+      ],
+      "ejemplo": "EventService",
+      "estado": "CUMPLE",
+      "evidencia": [
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/organization/application/usecase/AuditService.java",
+          "linea": 23,
+          "contenido": "public class AuditService implements AuditUseCase {",
+          "nota": ""
+        },
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/organization/application/usecase/OrganizationService.java",
+          "linea": 28,
+          "contenido": "public class OrganizationService implements OrganizationUseCase {",
+          "nota": ""
+        }
+      ],
+      "detalle": "2 casos de uso bien nombrados."
+    },
+    {
+      "id": "NOM-04",
+      "seccion": "Convenciones de nombres",
+      "nombre": "Adaptadores {Entidad}PersistenceAdapter y {Cliente}ClientAdapter",
+      "severidad": "MEDIA",
+      "que_cambiar": "Las clases que implementan puertos de salida terminan en PersistenceAdapter, ClientAdapter o Adapter según su uso.",
+      "opciones": [
+        "Renombrar el adaptador"
+      ],
+      "ejemplo": "EventPersistenceAdapter, EventClientAdapter",
+      "estado": "CUMPLE",
+      "evidencia": [
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/organization/infrastructure/adapter/out/persistence/r2dbc/AuditLogPersistenceAdapter.java",
+          "linea": 17,
+          "contenido": "public class AuditLogPersistenceAdapter implements AuditLogRepositoryPort {",
+          "nota": ""
+        },
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/organization/infrastructure/adapter/out/persistence/r2dbc/OrganizationPersistenceAdapter.java",
+          "linea": 23,
+          "contenido": "public class OrganizationPersistenceAdapter implements OrganizationRepositoryPort {",
+          "nota": ""
+        }
+      ],
+      "detalle": "2 adaptadores bien nombrados."
+    },
+    {
+      "id": "NOM-05",
+      "seccion": "Convenciones de nombres",
+      "nombre": "Entity, Document y Repository dentro del adaptador de persistencia",
+      "severidad": "MEDIA",
+      "que_cambiar": "Modelo SQL {Entidad}Entity en entity, MongoDB {Entidad}Document en document y {Entidad}Repository en repository.",
+      "opciones": [
+        "Renombrar o mover la clase de persistencia"
+      ],
+      "ejemplo": "adapter/out/persistence/r2dbc/entity/EventEntity.java",
+      "estado": "CUMPLE",
+      "evidencia": [
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/organization/infrastructure/adapter/out/persistence/r2dbc/entity/AuditLogEntity.java",
+          "linea": 12,
+          "contenido": "public class AuditLogEntity extends BaseEntity {",
+          "nota": ""
+        },
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/organization/infrastructure/adapter/out/persistence/r2dbc/entity/BaseEntity.java",
+          "linea": 16,
+          "contenido": "public abstract class BaseEntity implements Persistable<String> {",
+          "nota": ""
+        },
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/organization/infrastructure/adapter/out/persistence/r2dbc/entity/OrganizationEntity.java",
+          "linea": 14,
+          "contenido": "public class OrganizationEntity extends BaseEntity {",
+          "nota": ""
+        },
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/organization/infrastructure/adapter/out/persistence/r2dbc/repository/AuditLogRepository.java",
+          "linea": 7,
+          "contenido": "public interface AuditLogRepository extends ReactiveCrudRepository<AuditLogEntity, String> {",
+          "nota": ""
+        },
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/organization/infrastructure/adapter/out/persistence/r2dbc/repository/OrganizationRepository.java",
+          "linea": 10,
+          "contenido": "public interface OrganizationRepository extends ReactiveCrudRepository<OrganizationEntity, String> {",
+          "nota": ""
+        }
+      ],
+      "detalle": "3 clases Entity y 2 repositorios."
+    },
+    {
+      "id": "NOM-06",
+      "seccion": "Convenciones de nombres",
+      "nombre": "DTOs {Acción}{Entidad}Request y {Entidad}Response",
+      "severidad": "MEDIA",
+      "que_cambiar": "Los DTOs de entrada terminan en Request y los de salida en Response; los sobres comunes se mantienen.",
+      "opciones": [
+        "Renombrar el DTO"
+      ],
+      "ejemplo": "CreateEventRequest, EventResponse",
+      "estado": "CUMPLE",
+      "evidencia": [
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/organization/infrastructure/adapter/in/rest/dto/request/OrganizationRequest.java",
+          "linea": 13,
+          "contenido": "public record OrganizationRequest(",
+          "nota": ""
+        },
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/organization/infrastructure/adapter/in/rest/dto/response/ApiErrorResponse.java",
+          "linea": 7,
+          "contenido": "public record ApiErrorResponse(",
+          "nota": ""
+        },
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/organization/infrastructure/adapter/in/rest/dto/response/ApiResponse.java",
+          "linea": 9,
+          "contenido": "public record ApiResponse<T>(",
+          "nota": ""
+        },
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/organization/infrastructure/adapter/in/rest/dto/response/OrganizationResponse.java",
+          "linea": 9,
+          "contenido": "public record OrganizationResponse(",
+          "nota": ""
+        },
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/organization/infrastructure/adapter/in/rest/dto/response/PublicOrganizationResponse.java",
+          "linea": 7,
+          "contenido": "public record PublicOrganizationResponse(",
+          "nota": ""
+        },
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/organization/infrastructure/adapter/in/rest/dto/response/ValidationErrorResponse.java",
+          "linea": 7,
+          "contenido": "public record ValidationErrorResponse(",
+          "nota": ""
+        }
+      ],
+      "detalle": "1 requests y 5 responses; ResponseDto, ErrorMessage y ValidationError son el sobre común."
+    },
+    {
+      "id": "NOM-07",
+      "seccion": "Convenciones de nombres",
+      "nombre": "Interfaces sin prefijo I y sin mezclar interfaces, clases y DTOs",
+      "severidad": "MEDIA",
+      "que_cambiar": "Quita el prefijo I y separa interfaces, implementaciones y DTOs en paquetes distintos.",
+      "opciones": [
+        "Renombrar IEventService a EventUseCase",
+        "Mover la implementación a su paquete"
+      ],
+      "ejemplo": "domain/port/in/EventUseCase",
+      "estado": "CUMPLE",
+      "evidencia": [],
+      "detalle": "Sin prefijo I y con interfaces e implementaciones separadas."
+    },
+    {
+      "id": "NOM-08",
+      "seccion": "Convenciones de nombres",
+      "nombre": "artifactId vg-ms-{servicio}",
+      "severidad": "BAJA",
+      "que_cambiar": "El artifactId del pom.xml es el nombre del repositorio.",
+      "opciones": [
+        "Cambiar <artifactId> en el pom"
+      ],
+      "ejemplo": "<artifactId>vg-ms-eventservice</artifactId>",
+      "estado": "CUMPLE",
+      "evidencia": [
+        {
+          "archivo": "pom.xml",
+          "linea": 13,
+          "contenido": "<artifactId>vg-ms-organizationservice</artifactId>",
+          "nota": ""
+        }
+      ],
+      "detalle": "artifactId: vg-ms-organizationservice"
+    },
+    {
+      "id": "DTO-01",
+      "seccion": "DTOs y Java records",
+      "nombre": "Los endpoints no exponen modelos de dominio ni entidades",
+      "severidad": "ALTA",
+      "que_cambiar": "Cada endpoint devuelve DTOs de respuesta; el dominio y la entidad no salen del servicio.",
+      "opciones": [
+        "Mapear el dominio con el mapper REST"
+      ],
+      "ejemplo": "Mono<ResponseDto<EventResponse>> findById(...)",
+      "estado": "CUMPLE",
+      "evidencia": [],
+      "detalle": "8 endpoints devuelven DTOs."
+    },
+    {
+      "id": "EXC-01",
+      "seccion": "Excepciones y errores HTTP",
+      "nombre": "Excepciones de negocio en domain/exception y técnicas en exception/custom",
+      "severidad": "ALTA",
+      "que_cambiar": "Las excepciones que lanza el caso de uso viven en domain/exception; las del adaptador en infrastructure/exception/custom.",
+      "opciones": [
+        "Mover la excepción de negocio al dominio"
+      ],
+      "ejemplo": "domain/exception/ResourceNotFoundException.java",
+      "estado": "CUMPLE",
+      "evidencia": [
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/organization/domain/exception/DomainException.java",
+          "linea": 4,
+          "contenido": "public abstract class DomainException extends RuntimeException {",
+          "nota": ""
+        },
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/organization/domain/exception/DomainValidationException.java",
+          "linea": 4,
+          "contenido": "public class DomainValidationException extends DomainException {",
+          "nota": ""
+        },
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/organization/domain/exception/DuplicateIdException.java",
+          "linea": 4,
+          "contenido": "public class DuplicateIdException extends DuplicateResourceException {",
+          "nota": ""
+        },
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/organization/domain/exception/DuplicateResourceException.java",
+          "linea": 4,
+          "contenido": "public class DuplicateResourceException extends RuntimeException {",
+          "nota": ""
+        },
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/organization/domain/exception/RecordStateConflictException.java",
+          "linea": 4,
+          "contenido": "public class RecordStateConflictException extends DomainException {",
+          "nota": ""
+        },
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/organization/domain/exception/ResourceNotFoundException.java",
+          "linea": 4,
+          "contenido": "public class ResourceNotFoundException extends RuntimeException {",
+          "nota": ""
+        },
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/organization/domain/exception/TenantAccessException.java",
+          "linea": 4,
+          "contenido": "public class TenantAccessException extends DomainException {",
+          "nota": ""
+        },
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/organization/infrastructure/exception/custom/PersistenceOperationException.java",
+          "linea": 4,
+          "contenido": "public final class PersistenceOperationException extends RuntimeException {",
+          "nota": ""
+        }
+      ],
+      "detalle": "7 excepciones de negocio y 1 técnicas."
+    },
+    {
+      "id": "EXC-02",
+      "seccion": "Excepciones y errores HTTP",
+      "nombre": "GlobalExceptionHandler con respaldo general",
+      "severidad": "CRÍTICA",
+      "que_cambiar": "GlobalExceptionHandler centraliza los errores y responde 500 sin detalles ante una excepción inesperada.",
+      "opciones": [
+        "Agregar @ExceptionHandler(Exception.class)"
+      ],
+      "ejemplo": "@ExceptionHandler(Exception.class) → 500",
+      "estado": "CUMPLE",
+      "evidencia": [
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/organization/infrastructure/exception/GlobalExceptionHandler.java",
+          "linea": 121,
+          "contenido": "@ExceptionHandler(Exception.class)",
+          "nota": ""
+        }
+      ],
+      "detalle": "Maneja el respaldo general."
+    },
+    {
+      "id": "EXC-03",
+      "seccion": "Excepciones y errores HTTP",
+      "nombre": "Sin RuntimeException genérica ni decisiones por getMessage",
+      "severidad": "ALTA",
+      "que_cambiar": "Lanza excepciones tipadas y decide el código HTTP por el tipo, nunca por el texto.",
+      "opciones": [
+        "Crear una excepción por motivo"
+      ],
+      "ejemplo": "throw new ResourceNotFoundException(...)",
+      "estado": "CUMPLE",
+      "evidencia": [],
+      "detalle": "No hay RuntimeException genérica ni decisiones por mensaje."
+    },
+    {
+      "id": "EXC-04",
+      "seccion": "Excepciones y errores HTTP",
+      "nombre": "Errores de integridad de base de datos manejados",
+      "severidad": "ALTA",
+      "que_cambiar": "Maneja DataIntegrityViolationException o DuplicateKeyException y responde CONFLICT.",
+      "opciones": [
+        "Agregar el manejador en GlobalExceptionHandler"
+      ],
+      "ejemplo": "@ExceptionHandler(DataIntegrityViolationException.class) → 409",
+      "estado": "CUMPLE",
+      "evidencia": [
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/organization/infrastructure/exception/GlobalExceptionHandler.java",
+          "linea": 5,
+          "contenido": "import org.springframework.dao.DataIntegrityViolationException;",
+          "nota": ""
+        }
+      ],
+      "detalle": "La violación de integridad responde 409."
+    },
+    {
+      "id": "VAL-01",
+      "seccion": "Validación de entradas",
+      "nombre": "Bean Validation en los DTOs de entrada y @Valid en el controller",
+      "severidad": "ALTA",
+      "que_cambiar": "Valida formato en el adaptador REST con anotaciones de Jakarta y @Valid; las reglas de negocio van en el dominio.",
+      "opciones": [
+        "Agregar @NotBlank, @Size y @Valid"
+      ],
+      "ejemplo": "@Valid @RequestBody CreateEventRequest request",
+      "estado": "CUMPLE",
+      "evidencia": [
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/organization/infrastructure/adapter/in/rest/dto/request/OrganizationRequest.java",
+          "linea": 11,
+          "contenido": "@JsonIgnoreProperties(ignoreUnknown = true)",
+          "nota": "validación de formato"
+        },
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/organization/infrastructure/adapter/in/rest/controller/AdminOrganizationRest.java",
+          "linea": 36,
+          "contenido": "@Validated",
+          "nota": ""
+        }
+      ],
+      "detalle": "1 DTOs con Bean Validation y 1 controllers con @Valid."
+    },
+    {
+      "id": "PER-01",
+      "seccion": "Persistencia",
+      "nombre": "Stack reactivo sin dependencias bloqueantes",
+      "severidad": "ALTA",
+      "que_cambiar": "No mezcles spring-boot-starter-web, JPA, JDBC ni el driver org.postgresql:postgresql con WebFlux.",
+      "opciones": [
+        "Usar spring-boot-starter-webflux y R2DBC",
+        "Reemplazar block por composición"
+      ],
+      "ejemplo": "spring-boot-starter-data-r2dbc",
+      "estado": "CUMPLE",
+      "evidencia": [],
+      "detalle": "WebFlux sin dependencias ni llamadas bloqueantes."
+    },
+    {
+      "id": "PER-02",
+      "seccion": "Persistencia",
+      "nombre": "Migraciones en db/migration solo con Flyway o Liquibase",
+      "severidad": "BAJA",
+      "que_cambiar": "Usa resources/db/migration solo si Flyway o Liquibase está configurado.",
+      "opciones": [
+        "Agregar Flyway",
+        "Mover los scripts manuales fuera de db/migration"
+      ],
+      "ejemplo": "src/main/resources/db/migration/V1__init.sql",
+      "estado": "NO_APLICA",
+      "evidencia": [],
+      "detalle": "No usa db/migration."
+    },
+    {
+      "id": "CLI-01",
+      "seccion": "Clientes HTTP externos",
+      "nombre": "Cada cliente con su adaptador, DTOs y mapper",
+      "severidad": "ALTA",
+      "que_cambiar": "Agrupa cada cliente externo en client/{cliente} con {Cliente}ClientAdapter, dto y mapper; traduce los errores HTTP.",
+      "opciones": [
+        "Mover el cliente a su carpeta",
+        "Crear el mapper del contrato remoto"
+      ],
+      "ejemplo": "adapter/out/client/event/EventClientAdapter.java",
+      "estado": "NO_APLICA",
+      "evidencia": [],
+      "detalle": "El servicio no llama a otros servicios."
+    },
+    {
+      "id": "CFG-01",
+      "seccion": "Configuración y entornos",
+      "nombre": "application.yml con perfiles -dev y -prod",
+      "severidad": "MEDIA",
+      "que_cambiar": "Separa la configuración común de la de cada entorno.",
+      "opciones": [
+        "Crear application-dev.yml y application-prod.yml"
+      ],
+      "ejemplo": "application.yml, application-dev.yml, application-prod.yml",
+      "estado": "CUMPLE",
+      "evidencia": [
+        {
+          "archivo": "src/main/resources/application.yml",
+          "linea": 1,
+          "contenido": "",
+          "nota": "presente"
+        },
+        {
+          "archivo": "src/main/resources/application-dev.yml",
+          "linea": 1,
+          "contenido": "",
+          "nota": "presente"
+        },
+        {
+          "archivo": "src/main/resources/application-prod.yml",
+          "linea": 1,
+          "contenido": "",
+          "nota": "presente"
+        }
+      ],
+      "detalle": "Los tres archivos de configuración existen."
+    },
+    {
+      "id": "CFG-02",
+      "seccion": "Configuración y entornos",
+      "nombre": "URLs de entorno y lab.vallegrande.edu.pe por variable",
+      "severidad": "ALTA",
+      "que_cambiar": "El host y las URLs de entorno llegan por variable; en YAML solo como valor por defecto de ${VARIABLE:...}.",
+      "opciones": [
+        "issuer-uri: ${KEYCLOAK_ISSUER_URI:https://...}",
+        "Quitar la URL del código Java"
+      ],
+      "ejemplo": "issuer-uri: ${IDP_ISSUER_URI}",
+      "estado": "CUMPLE",
+      "evidencia": [],
+      "detalle": "Las URLs de entorno llegan por variable."
+    },
+    {
+      "id": "CFG-03",
+      "seccion": "Configuración y entornos",
+      "nombre": "CORS por variable desde infrastructure/config",
+      "severidad": "MEDIA",
+      "que_cambiar": "Lee los orígenes CORS de una variable de entorno; nada de @CrossOrigin ni listas escritas en Java.",
+      "opciones": [
+        "Usar @Value(\"${cors.allowed-origins}\") en CorsConfig"
+      ],
+      "ejemplo": "cors.allowed-origins: ${CORS_ALLOWED_ORIGINS}",
+      "estado": "CUMPLE",
+      "evidencia": [
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/organization/infrastructure/config/CorsConfig.java",
+          "linea": 18,
+          "contenido": "@Value(\"${cors.allowed-origins}\")",
+          "nota": "orígenes por variable"
+        }
+      ],
+      "detalle": "CorsConfig lee los orígenes de la configuración."
+    },
+    {
+      "id": "CFG-04",
+      "seccion": "Configuración y entornos",
+      "nombre": ".env.example con nombres y valores ficticios; sin secretos",
+      "severidad": "CRÍTICA",
+      "que_cambiar": "Documenta las variables en .env.example con valores ficticios y no versiones secretos.",
+      "opciones": [
+        "Vaciar los valores reales",
+        "Mover el secreto al Environment del despliegue"
+      ],
+      "ejemplo": "DB_PASSWORD=",
+      "estado": "CUMPLE",
+      "evidencia": [
+        {
+          "archivo": ".env.example",
+          "linea": 4,
+          "contenido": "SERVER_PORT=8093",
+          "nota": ""
+        }
+      ],
+      "detalle": ".env.example documenta 8 variables sin valores reales."
+    },
+    {
+      "id": "CFG-05",
+      "seccion": "Multitenancy",
+      "nombre": "Sin identificadores de organización fijos",
+      "severidad": "ALTA",
+      "que_cambiar": "La organización sale de la identidad autenticada; nunca un valor fijo ni por defecto en el código.",
+      "opciones": [
+        "Leer el tenant del token"
+      ],
+      "ejemplo": "requester.tenantId()",
+      "estado": "CUMPLE",
+      "evidencia": [],
+      "detalle": "No hay identificadores de organización fijos."
+    },
+    {
+      "id": "TST-01",
+      "seccion": "Pruebas",
+      "nombre": "Pruebas por capa y casos de uso con dobles de los puertos",
+      "severidad": "MEDIA",
+      "que_cambiar": "Ubica pruebas en domain, application e infrastructure; los casos de uso se prueban con dobles de los puertos.",
+      "opciones": [
+        "Mockear el puerto en vez del repositorio"
+      ],
+      "ejemplo": "@Mock EventRepositoryPort eventRepository;",
+      "estado": "CUMPLE",
+      "evidencia": [
+        {
+          "archivo": "src/test/java/application",
+          "linea": 1,
+          "contenido": "",
+          "nota": ""
+        },
+        {
+          "archivo": "src/test/java/domain",
+          "linea": 1,
+          "contenido": "",
+          "nota": ""
+        },
+        {
+          "archivo": "src/test/java/infrastructure",
+          "linea": 1,
+          "contenido": "",
+          "nota": ""
+        }
+      ],
+      "detalle": "14 clases de prueba en las tres capas; los casos de uso usan dobles de los puertos."
+    },
+    {
+      "id": "DOC-01",
+      "seccion": "Documentación de API",
+      "nombre": "Colección Postman en resources/doc con una carpeta por *Rest",
+      "severidad": "MEDIA",
+      "que_cambiar": "Versiona src/main/resources/doc/{servicio}-collection.json con una carpeta por *Rest, ejemplos de respuesta y un caso de error.",
+      "opciones": [
+        "Exportar la colección desde Postman",
+        "Agregar ejemplos guardados a cada request"
+      ],
+      "ejemplo": "src/main/resources/doc/event-collection.json",
+      "estado": "CUMPLE",
+      "evidencia": [
+        {
+          "archivo": "src/main/resources/doc/organization-collection.json",
+          "linea": 3,
+          "contenido": "\"name\": \"vg-ms-organizationservice\",",
+          "nota": "10 requests en 2 carpetas"
+        }
+      ],
+      "detalle": "Una carpeta por *Rest, 10 requests con ejemplos y casos de error."
+    },
+    {
+      "id": "DOC-02",
+      "seccion": "Documentación de API",
+      "nombre": "README con propósito, cómo levantarlo y endpoints",
+      "severidad": "BAJA",
+      "que_cambiar": "El README explica qué hace el servicio, cómo levantarlo y sus endpoints.",
+      "opciones": [
+        "Completar el README"
+      ],
+      "ejemplo": "README.md",
+      "estado": "CUMPLE",
+      "evidencia": [
+        {
+          "archivo": "README.md",
+          "linea": 1,
+          "contenido": "# vg-ms-organizationservice",
+          "nota": ""
+        }
+      ],
+      "detalle": "El README cubre propósito, arranque y endpoints."
+    },
+    {
+      "id": "CI-01",
+      "seccion": "Verificación automática del estándar",
+      "nombre": "Job standards-check en test, solo develop y sin bloquear",
+      "severidad": "ALTA",
+      "que_cambiar": "Incluye el job standards-check en el stage test, con allow_failure: true y solo en develop.",
+      "opciones": [
+        "Pegar el job del estándar en .gitlab-ci.yml"
+      ],
+      "ejemplo": "standards-check: stage: test, allow_failure: true, only: develop",
+      "estado": "CUMPLE",
+      "evidencia": [
+        {
+          "archivo": ".gitlab-ci.yml",
+          "linea": 6,
+          "contenido": "standards-check:",
+          "nota": ""
+        }
+      ],
+      "detalle": "standards-check en test, solo develop, sin bloquear y con artifact."
+    },
+    {
+      "id": "IA-01",
+      "seccion": "Responsabilidades y dependencias",
+      "nombre": "Las reglas de negocio viven en el dominio o en el caso de uso",
+      "severidad": "MEDIA",
+      "que_cambiar": "Revisar que los *Rest solo validen formato, mapeen y deleguen.",
+      "opciones": [],
+      "ejemplo": "",
+      "estado": "CUMPLE",
+      "evidencia": [],
+      "detalle": "2 Rest con 0 condicionales en total; solo validan, mapean y delegan."
+    },
+    {
+      "id": "IA-02",
+      "seccion": "Mappers y modelos por frontera",
+      "nombre": "Cada frontera usa su propio modelo",
+      "severidad": "MEDIA",
+      "que_cambiar": "Revisar que dominio, entidad, DTO público y DTO remoto no se mezclen.",
+      "opciones": [],
+      "ejemplo": "",
+      "estado": "CUMPLE",
+      "evidencia": [],
+      "detalle": "Dominio, entidades y DTOs están separados; ninguno importa el modelo de otra frontera."
+    },
+    {
+      "id": "IA-03",
+      "seccion": "Excepciones y errores HTTP",
+      "nombre": "Mensajes de error útiles y sin detalles internos",
+      "severidad": "MEDIA",
+      "que_cambiar": "Revisar los textos de las excepciones.",
+      "opciones": [],
+      "ejemplo": "",
+      "estado": "CUMPLE",
+      "evidencia": [
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/organization/infrastructure/exception/GlobalExceptionHandler.java",
+          "linea": 11,
+          "contenido": "import org.springframework.web.bind.annotation.RestControllerAdvice;",
+          "nota": ""
+        }
+      ],
+      "detalle": "Manejador global con mensajes propios y sin trazas."
+    },
+    {
+      "id": "IA-04",
+      "seccion": "Convenciones de nombres",
+      "nombre": "Clases cohesionadas y nombres expresivos",
+      "severidad": "MEDIA",
+      "que_cambiar": "Revisar tamaño y responsabilidad de las clases.",
+      "opciones": [],
+      "ejemplo": "",
+      "estado": "CUMPLE",
+      "evidencia": [
+        {
+          "archivo": "src/main/java/pe/edu/vallegrande/fideinexus/organization/application/usecase/OrganizationService.java",
+          "linea": 1,
+          "contenido": "package pe.edu.vallegrande.fideinexus.organization.application.usecase;",
+          "nota": ""
+        }
+      ],
+      "detalle": "La clase más grande es OrganizationService con 135 líneas; el límite es 300."
+    }
+  ],
+  "checklist_pr": [
+    {
+      "item": "domain/ no importa Spring, HTTP ni base de datos",
+      "criterios": "ARQ-06, ARQ-07",
+      "cumple": true
+    },
+    {
+      "item": "Los modelos de domain/model no tienen anotaciones de persistencia",
+      "criterios": "ARQ-06",
+      "cumple": true
+    },
+    {
+      "item": "Lo que el núcleo necesita de afuera está declarado en domain/port/out",
+      "criterios": "ARQ-09",
+      "cumple": true
+    },
+    {
+      "item": "El caso de uso depende de puertos, no de Spring Data ni de clientes concretos",
+      "criterios": "ARQ-08, ARQ-11",
+      "cumple": true
+    },
+    {
+      "item": "El controller valida formato, mapea y delega; no tiene reglas de negocio",
+      "criterios": "ARQ-10, VAL-01",
+      "cumple": true
+    },
+    {
+      "item": "Los endpoints no exponen modelos de dominio ni entidades de persistencia",
+      "criterios": "DTO-01",
+      "cumple": true
+    },
+    {
+      "item": "Cada frontera tiene su mapper, y no hay mappers vacíos",
+      "criterios": "MAP-01, CLI-01",
+      "cumple": true
+    },
+    {
+      "item": "Los nombres siguen la tabla de convenciones",
+      "criterios": "NOM-01, NOM-02, NOM-03, NOM-04, NOM-05, NOM-06, NOM-07, NOM-08",
+      "cumple": true
+    },
+    {
+      "item": "Las excepciones de negocio están en domain/exception y son tipadas",
+      "criterios": "EXC-01",
+      "cumple": true
+    },
+    {
+      "item": "El código HTTP se decide por el tipo de excepción, no por el texto del mensaje",
+      "criterios": "EXC-03",
+      "cumple": true
+    },
+    {
+      "item": "No se agregaron carpetas ni clases que el servicio no use",
+      "criterios": "ARQ-03, ARQ-04, ARQ-05, ARQ-12",
+      "cumple": true
+    },
+    {
+      "item": "No hay secretos en el repositorio; .env.example solo tiene nombres y valores ficticios",
+      "criterios": "CFG-04",
+      "cumple": true
+    },
+    {
+      "item": "Las URLs de entorno, incluido lab.vallegrande.edu.pe, llegan por variable",
+      "criterios": "CFG-02, CFG-03",
+      "cumple": true
+    },
+    {
+      "item": "No hay identificadores de organización fijos en el código",
+      "criterios": "CFG-05",
+      "cumple": true
+    },
+    {
+      "item": "La colección Postman refleja los endpoints de este cambio",
+      "criterios": "DOC-01",
+      "cumple": true
+    },
+    {
+      "item": "El job standards-check sigue presente en el .gitlab-ci.yml",
+      "criterios": "CI-01",
+      "cumple": true
+    }
+  ]
+}
